@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <style>
+    /* utiliser le z-index pour gérer les vies et les niveaux ? ou des animations longues ? */
+    * {
+      margin: 0;
+      padding: 0;
+      pointer-events: none;
+    }
+    
+    .root {
+      margin: 200px auto 0 auto;
+      width: 600px;
+      height: 600px;
+      background: grey;
+    }
+
+    .background {
+      width: 600px;
+      height: 600px;
+      transition: background 0.2s ease-in-out;
+      background: linear-gradient(
+        rgb(186, 234, 255),
+        rgb(230, 230, 222),
+        rgb(88, 155, 179),
+        rgb(20, 136, 146)
+      );
+    }
+    .ground {
+      display: none;
+      width: 600px;
+      height: 600px;
+      transition: background 0.2s ease-in-out;
+    }
+    .sky {
+      display: none;
+      width: 600px;
+      height: 600px;
+      background-color: blue;
+    }
+    .zone {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+    }
+    .hover {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      pointer-events: auto;
+    }
+    .left-plus-45 > .hover {
+      top: 0px;
+      left: 0px;
+    }
+    .left-minus-45  > .hover {
+      bottom: 0px;
+      left: 0px;
+    }
+
+    .right-plus-45 > .hover {
+      top: 0px;
+      right: 0px;
+      bottom: 350px;
+      height: 250px;
+    }
+    .right-middle > .hover {
+      top: 250px;
+      bottom: 250px;
+      right: 0px;
+      height: 100px;
+    }
+    .right-minus-45  > .hover {
+      top: 350px;
+      bottom: 0px;
+      right: 0px;
+      height: 250px;
+    }
+    /* background */
+    .left-plus-45:hover .ground {
+      background: rgb(233, 125, 112);
+    }
+    .left-minus-45:hover .ground {
+      background: rgb(103, 130, 218);
+    }
+   .right-plus-45:hover .ground {
+      background: rgb(222, 238, 119);
+    }
+    .right-middle:hover .ground {
+      background: rgb(197, 199, 199);
+    }
+    .right-minus-45:hover .ground {
+      background: rgb(97, 191, 83);
+    }
+
+    /* rocket */
+    .rocket-container {
+      position: absolute;
+      top: 270px;
+      left: 280px;
+      width: 40px;
+      height: 40px;
+    }
+
+    .rocket {
+      position: absolute;
+      transform-origin: 53% 52%;
+      transition: transform 0.15s ease-in-out;
+      perspective: 600px;
+      font-size: 45px;
+
+      /*filter: drop-shadow(0px 268px 4px rgba(0,0,0,0.3));*/
+      animation: upDown 1s ease-in-out infinite;
+    }
+
+    @keyframes upDown {
+      0% {
+        margin-top: 0px;
+      }
+      50% {
+        margin-top: 10px;
+      }
+      100% {
+        margin-top: 0px;
+      }
+    }
+
+    
+    .left-plus-45:hover .rocket { transform: rotate(-80deg); }
+    .left-minus-45:hover .rocket { transform: rotate(180deg); }
+    .right-plus-45:hover .rocket { transform: rotate(10deg); }
+    .right-middle:hover .rocket { transform: rotate(43deg); }
+    .right-minus-45:hover .rocket { transform: rotate(90deg); }
+
+    /* mountain */
+    .landscape {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 600px;
+    height: 250px;
+    overflow: hidden;
+    }
+
+    .landscape > div {
+      position: absolute;
+      width: 1200px;
+    }
+
+    /* inline sprite system */
+    .sprite { display: inline-block; }
+
+    figure {
+      display: inline-block;
+      filter: drop-shadow(0px 7px 5px rgba(255, 255, 255, 0.4));
+      animation: seaShore 2s ease-in-out infinite;
+    }
+
+    @keyframes seaShore {
+      0% {
+        filter: drop-shadow(0px 6px 5px rgba(255, 255, 255, 0.4));
+      }
+      50% {
+        filter: drop-shadow(0px 6px 7px rgba(255, 255, 255, 0.15));
+      }
+      100% {
+        filter: drop-shadow(0px 6px 5px rgba(255, 255, 255, 0.4));
+      }
+    }
+
+    /* if the second parameter b is present */
+    figure[n="1"][b]:before { content: " " attr(a); }
+    figure[n="2"][b]:before { content: " " attr(a) " " attr(b); }
+    figure[n="3"][b]:before { content: " " attr(a) " " attr(b) " " attr(a); }
+    figure[n="4"][b]:before { content: " " attr(a) " " attr(b) " " attr(a) " " attr(b); }
+    figure[n="5"][b]:before { content: " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a); }
+    figure[n="6"][b]:before { content: " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b); }
+
+    figure[n="7"][b]:before { content: " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a); }
+    figure[n="8"][b]:before { content: " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b); }
+    figure[n="9"][b]:before { content: " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a); }
+    figure[n="10"][b]:before { content: " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b); }
+    figure[n="11"][b]:before { content: " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a); }
+    figure[n="12"][b]:before { content: " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b); }
+    figure[n="13"][b]:before { content: " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a); }
+
+    /* if the second parameter b is missing */
+    figure[n="1"]:not([b]):before { content: " " attr(a); }
+    figure[n="2"]:not([b]):before { content: " " attr(a) " " attr(a); }
+    figure[n="3"]:not([b]):before { content: " " attr(a) " " attr(a) " " attr(a); }
+    figure[n="4"]:not([b]):before { content: " " attr(a) " " attr(a) " " attr(a) " " attr(a); }
+    figure[n="5"]:not([b]):before { content: " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a); }
+    figure[n="6"]:not([b]):before { content: " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a); }
+    figure[n="7"]:not([b]):before { content: " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a); }
+    figure[n="8"]:not([b]):before { content: " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a); }
+    figure[n="9"]:not([b]):before { content: " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a); }
+    figure[n="10"]:not([b]):before { content: " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a); }
+    figure[n="11"]:not([b]):before { content: " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a); }
+    figure[n="12"]:not([b]):before { content: " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a); }
+    figure[n="13"]:not([b]):before { content: " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a); }
+
+    .paralax-1 {
+      font-size: 50px;
+      animation: h-scroll-1 10s linear infinite;
+      filter: saturate(30%);
+    }
+
+    .paralax-2 {
+      font-size: 90px;
+      animation: h-scroll-2 10s linear infinite;
+      filter: saturate(90%);
+    }
+    .paralax-3 {
+      font-size: 150px;
+      animation: h-scroll-3 10s linear infinite;
+      filter: saturate(130%);
+    }
+
+    /* 
+      magic wave effect on reflections 
+      closer waves shake faster
+    */
+    .paralax-1.reflection {
+      animation: h-scroll-1 10s linear infinite, waves 3s ease-in-out infinite;
+    }
+    .paralax-2.reflection {
+      animation: h-scroll-2 10s linear infinite, waves 2s ease-in-out infinite;;
+    }
+    .paralax-3.reflection {
+      animation: h-scroll-3 10s linear infinite, waves 1.5s ease-in-out infinite;;
+    }
+
+  .reflection {
+      transform: translate(0px, 49%) scale(1.0, -1.0) skew(0deg, 0deg);
+    }
+
+    /* the reflection being in the water, it is a bit blurry */
+    .reflection > figure:before {
+    filter: blur(6px);
+      opacity: 0.4;
+    }
+
+    /* the reflection moves with the waves */
+    @keyframes waves {
+      0% {
+        transform: translate(0px, 49%) scale(1.0, -0.8) skew(-4deg, 0deg);
+      }
+      50% {
+        transform: translate(0px, 48%) scale(1.0, -0.75) skew(2deg, 0deg);
+      }
+      100% {
+        transform: translate(0px, 49%) scale(1.0, -0.8) skew(-4deg, 0deg);
+      }
+    }
+
+    .paralax-4 {
+      display: none;
+      bottom: 20px;
+      font-size: 20px;
+      animation: h-scroll-3 10s linear infinite;
+    }
+
+    .paralax-4 > .sprite:nth-child(even) {
+      transform: translate(0, 10px);
+    }
+    .paralax-4 > .sprite:nth-child(odd) {
+      transform: translate(0, 20px);
+    }
+
+    @keyframes h-scroll-1  {
+      0% { left: 600px; }
+      100% { left: -600px; }
+    }
+
+    @keyframes h-scroll-2  {
+      0% { left: 800px; }
+      100% { left: -800px; }
+    }
+    @keyframes h-scroll-3  {
+      0% { left: 1000px; }
+      100% { left: -1000px; }
+    }
+
+  </style>
+  <body>
+    <div class="root">
+      <div class="zone left-plus-45">
+        <div class="hover"></div>
+        <div class="zone left-minus-45">
+          <div class="hover"></div>
+          <div class="zone right-plus-45">
+            <div class="hover"></div>
+            <div class="zone right-middle">
+              <div class="hover"></div>
+              <div class="zone right-minus-45">
+                <div class="hover"></div>
+                <div class="background">
+                  <div class="ground"></div>
+                  <div class="sky"></div>
+                  <div class="rocket"></div>
+                  <div class="asteroid-1">🌳</div>
+                  <div class="asteroid-2">🥔</div>
+                  <div class="explosion-1">🎇</div>
+                  <div class="explosion-2">🎆</div>
+                  <div class="laseball">🔮</div>
+                  <div class="ufo">🛸</div>
+                  <div class="rocket-container"><div class="rocket">🚀</div></div>
+                  
+                  <div class="landscape">
+                    <div class="paralax-1 reflection"><figure n=7 a=⛰ b=🏔 /></div>
+                    <div class="paralax-1"><figure n=7 a=⛰ b=🏔 /></div>
+                    
+                    <div class="paralax-2 reflection"><figure n=5 a=⛰ /></div>
+                    <div class="paralax-2"><figure n=5 a=⛰ /></div>
+                    
+                    <div class="paralax-3 reflection"><figure n=5 a=⛰ b=🗻 /></div>
+                    <div class="paralax-3"><figure n=5 a=⛰ b=🗻 /></div>
+           
+                  </div>
+
+                </div><!-- background -->
+              </div><!-- right-minus-45 -->
+            </div><!-- right-middle -->
+          </div><!-- right-plus-45 -->
+        </div><!-- left-minus-45 -->
+      </div><!-- left-plus-45" -->
+    </div><!-- root -->
+  </body>
+</html>
