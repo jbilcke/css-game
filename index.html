@@ -1,75 +1,33 @@
 <!DOCTYPE html>
 <html>
-  <head></head>
-  <style>
+  <head>
+    <style>
 
-   /* VARIABLES */
-  [d="0"]  { --d: 0; }
-  [d="1"]  { --d: 1; }
-  [d="2"]  { --d: 2; }
-  [d="3"]  { --d: 3; }
-  [d="4"]  { --d: 4; }
-  [d="5"]  { --d: 5; }
-  [d="6"]  { --d: 6; }
-  [d="7"]  { --d: 7; }
-  [d="8"]  { --d: 8; }
-  [d="9"]  { --d: 9; }
-  [d="10"] { --d: 10; }
-
-  [n="0"]  { --n: 0; }
-  [n="1"]  { --n: 1; }
-  [n="2"]  { --n: 2; }
-  [n="3"]  { --n: 3; }
-  [n="4"]  { --n: 4; }
-  [n="5"]  { --n: 5; }
-  [n="6"]  { --n: 6; }
-  [n="7"]  { --n: 7; }
-  [n="8"]  { --n: 8; }
-  [n="9"]  { --n: 9; }
-  [n="10"] { --n: 10; }
-
-  [p="0"]  { --p: 0; }
-  [p="1"]  { --p: 1; }
-  [p="2"]  { --p: 2; }
-  [p="3"]  { --p: 3; }
-  [p="4"]  { --p: 4; }
-  [p="5"]  { --p: 5; }
-  [p="6"]  { --p: 6; }
-  [p="7"]  { --p: 7; }
-  [p="8"]  { --p: 8; }
-  [p="9"]  { --p: 9; }
-  [p="10"] { --p: 10; }
-
-
-    /* utiliser le z-index pour gérer les vies et les niveaux ? ou des animations longues ? */
-    * {
-      margin: 0;
-      padding: 0;
-      pointer-events: none;
-    }
-
-    body {
-    }
+    /* mini reset */
+    * { margin: 0; padding: 0; pointer-events: none; box-sizing: border-box; }
     
+    /* numeric variable constant */
+    [d="0"]  { --d: 0; }
+    [d="1"]  { --d: 1; }
+    [d="2"]  { --d: 2; }
+    [d="3"]  { --d: 3; }
+    [d="4"]  { --d: 4; }
+    [d="5"]  { --d: 5; }
+    [d="6"]  { --d: 6; }
+    [d="7"]  { --d: 7; }
+    [d="8"]  { --d: 8; }
+    [d="9"]  { --d: 9; }
+    [d="10"] { --d: 10; }
+
+    /* outer shell */
     .root {
-      width: 600px;
-      height: 600px;
+      width: 600px; height: 600px;
       background: white;
       position: absolute;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
     }
-
-    .vignette {
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0px 2px 13px -3px #000000ad;
-    }
-
-    div, span, section {
-      box-sizing: border-box;
-    }
+    .root > div { border-radius: 20px; overflow: hidden; box-shadow: 0px 2px 13px -3px #000000ad; }
 
     main {
       width: 600px;
@@ -83,168 +41,53 @@
       );
       backface-visibility: hidden;
     }
-    .ground {
-      display: none;
-      width: 600px;
-      height: 600px;
-      transition: background 0.2s ease-in-out;
-    }
-    .sky {
-      display: none;
-      width: 600px;
-      height: 600px;
-      background-color: blue;
-    }
-    .zone {
+    
+    /* mouse controls */
+    .top, .middle, .bottom { position: absolute; width: 600px; height: 600px; }
+    .top:before, .middle:before, .bottom:before {
+      content: '';
+      display: block;
       position: absolute;
       width: 600px;
-      height: 600px;
-    }
-    .hover {
-      position: absolute;
-      width: 600px;
-      height: 600px;
+      left: 0px; right: 0px; 
       pointer-events: auto;
-
-
-      /* uncomment for debug only! 
+      /* uncomment for debug only!
       border: solid 1px rgba(255, 125, 112, 0.8);
       border-style: dashed;
       z-index: 1;
-      */
-    
+     */
     }
+    .top:before    { top:   0px; bottom: 350px; height: 250px; }
+    .middle:before { top: 250px; bottom: 250px; height: 100px; }
+    .bottom:before { top: 350px; bottom:   0px; height: 250px; }
 
-
-    .right-plus-45 > .hover {
-      top: 0px;
-      left: 0px;
-      right: 0px;
-      bottom: 350px;
-      height: 250px;
-    }
-    .right-middle > .hover {
-      top: 250px;
-      bottom: 250px;
-      left: 0px;
-      right: 0px;
-      height: 100px;
-    }
-    .right-minus-45  > .hover {
-      top: 350px;
-      bottom: 0px;
-      left: 0px;
-      right: 0px;
-      height: 250px;
-    }
-    /* background */
-
-   .right-plus-45:hover .ground {
-      background: rgb(222, 238, 119);
-    }
-    .right-middle:hover .ground {
-      background: rgb(197, 199, 199);
-    }
-    .right-minus-45:hover .ground {
-      background: rgb(97, 191, 83);
-    }
-
-
-    /* avatar */
-    .player {
-      position: absolute;
-      top: 300px;
-      left: 80px;
-      width: 40px;
-      height: 40px;
-    }
-
-    .avatar {
+    /* rocket */
+    .rocket { position: absolute; top: 300px; left: 80px; width: 40px; height: 40px; }
+    .rocket > figure:before {
       position: absolute;
       transform-origin: 53% 52%;
       transition: all 0.3s ease-in-out;
       perspective: 600px;
       font-size: 45px;
       transform: rotate(42deg) translate(0px, -90px) scale(1.8);
-      /*filter: drop-shadow(0px 268px 4px rgba(0,0,0,0.3));*/
       z-index: 10;
-      filter: blur(0px);
     }
-
     
-    .right-plus-45:hover  .avatar {
-      /*transform: rotate(10deg);*/
+    /* rocket control (z-index is used for sprite ordering) */
+    .top:hover .rocket > figure:before {
       transform: rotate(42deg) translate(80px, -120px) scale(0.5);
-     /* animation: move-top-anim 1s linear 0s;*/
-
-     /* if far, we bass behind the mountains */
       z-index: 3;
-      filter: blur(0px);
     }
-    .right-middle:hover .avatar {
+    .middle:hover .rocket > figure:before {
       transform: rotate(42deg) translate(150px, -90px) scale(1.8);
       z-index: 5;
-      filter: blur(0px);
     }
-    .right-minus-45:hover .avatar {
-      /*transform: rotate(90deg); */
+    .bottom:hover .rocket > figure:before {
       transform: rotate(42deg) translate(150px, 100px) scale(5.0);
       z-index: 10;
-      filter: blur(1px);
+      filter: blur(1px); /* camera proximity blur */
     }
 
-    .right-minus-45:hover aside {
-     /* filter: blur(2px);*/
-    }
-
-    /* move animation */
-    /*
-    @keyframes move-top-anim {
-      0% {
-        transform: rotate(10deg);
-      }
-      50% { 
-        transform: rotate(10deg) translate(10px, -200px);
-      }
-      100% {
-        transform: rotate(43deg) translate(10px, -200px);
-      }
-    }
-    */
-
-    .laserball {
-      display: none;
-      position: absolute;
-      top: 270px;
-      left: 180px;
-      width: 29px;
-      height: 27px;
-      font-size: 45px;
-    }
-
-    .laserball > figure:before {
-      position: absolute;
-      transition: all 0.2s ease-in-out;
-
-      margin: -7px 0px 0px -13px;
-
-
-      /*filter: drop-shadow(0px 268px 4px rgba(0,0,0,0.3));*/
-  
-    }
-
-    /* laserball animation */
-    @keyframes laser-anim {
-      0% {
-        transform: translate(0px, 0px);
-      }
-      50% { 
-        transform: translate(10px, -200px);
-      }
-      100% {
-        transform: translate(0px, -0px);
-      }
-    }
     /* terrain */
     aside {
       position: absolute;
@@ -253,23 +96,17 @@
       width: 600px; /* use a large value to debug, otherwise, 600px */
       height: 400px;
       overflow: hidden;
-      box-shadow: 0px 30px 66px 43px white;
-      backface-visibility: hidden;
+      box-shadow: 0px 30px 66px 43px white; /* critical part: atmosphere! */
     }
 
-    figure {
-      position: absolute;
-      display: inline-block;
-    }
-
-    /* if the second parameter b is present */
+    /* sprite engine */
+    figure { position: absolute; display: inline-block; }
     figure[n="1"][b]:before { content: " " attr(a); }
     figure[n="2"][b]:before { content: " " attr(a) " " attr(b); }
     figure[n="3"][b]:before { content: " " attr(a) " " attr(b) " " attr(a); }
     figure[n="4"][b]:before { content: " " attr(a) " " attr(b) " " attr(a) " " attr(b); }
     figure[n="5"][b]:before { content: " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a); }
     figure[n="6"][b]:before { content: " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b); }
-
     figure[n="7"][b]:before { content: " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a); }
     figure[n="8"][b]:before { content: " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b); }
     figure[n="9"][b]:before { content: " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a); }
@@ -277,8 +114,6 @@
     figure[n="11"][b]:before { content: " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a); }
     figure[n="12"][b]:before { content: " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b); }
     figure[n="13"][b]:before { content: " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a) " " attr(b) " " attr(a); }
-
-    /* if the second parameter b is missing */
     figure[n="1"]:not([b]):before { content: " " attr(a); }
     figure[n="2"]:not([b]):before { content: " " attr(a) " " attr(a); }
     figure[n="3"]:not([b]):before { content: " " attr(a) " " attr(a) " " attr(a); }
@@ -294,133 +129,59 @@
     figure[n="13"]:not([b]):before { content: " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a) " " attr(a); }
 
 
-    /* scrollers */
+    /* paralax engine (d is the depth, 1 being the farest) */
     section {
+      display: block;
       position: absolute;
       width: 3000px;
       height: 400px;
-      display: block;
       padding: 0px 800px;
       --d: 1;
-
       font-size: calc(45px * var(--d));
       background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
-      /*
-      background-blend-mode: unset;
-      */
       z-index: var(--d);
     }
 
-    /* reflection */
-    [reflection] {
-      /* TODO: use the D attribute as a variable for seconds? */
-      animation: reflection-anim 2s ease-in-out infinite;
-    }
-
-    /* we make it more colorful in front */
-    section[d="1"]  {
-      filter: saturate(40%);
-      padding-top: 0px;
-    }
-
-    section[d="2"] {
-      filter: saturate(100%);
-      padding-top: 0px;
-    }
-
-    /* boat */
-    section[d="3"] {
-      filter: saturate(170%);
-      top: 100px;
-      font-size: 40px;
-      background: none;
-    }
-
-    section[d="4"] {
-      filter: saturate(170%); 
-      /*filter: saturate(170%) blur(2px); */
-      padding-top: 30px;
-    }
-
-    section[d="1"] {
-      animation: scroll-anim-1 10s linear infinite;
-    }
-    section[d="2"] {
-      animation: scroll-anim-2 10s linear infinite;
-    }
-    section[d="3"] {
-      animation: scroll-anim-3 10s linear infinite;
-    }
-    section[d="4"] {
-      animation: scroll-anim-4 10s linear infinite;
-    }
-
-
-    /* wave animation */
-    @keyframes reflection-anim {
-      0% {
-        filter: blur(4px);
-        opacity: 0.4;
-        transform: translate(0px, 40%) scale(1.0, -0.75) skew(-8deg, 0deg);
-      }
-      50% { 
-        filter: blur(5px);
-        opacity: 0.4;
-        transform: translate(0px, 40%) scale(1.0, -0.60) skew( 0deg, 0deg);
-      }
-      100% {
-        filter: blur(4px);
-        opacity: 0.4;
-        transform: translate(0px, 40%) scale(1.0, -0.75) skew(-8deg, 0deg);
-      }
-    }
-
-    /* scrolling animation */
-
-    @keyframes scroll-anim-1  { 0% { left: 0px; }  100% { left: -1400px;  } }
-    @keyframes scroll-anim-2  { 0% { left: 0px; }  100% { left: -1800px;  } }
-    @keyframes scroll-anim-3  { 0% { left: 0px;  }  100% { left: -1200px;  } }
+    /* paralax scrolling */
+    section[d="1"] { animation: scroll-anim-1 10s linear infinite; }
+    section[d="2"] { animation: scroll-anim-2 10s linear infinite; }
+    section[d="3"] { animation: scroll-anim-3 10s linear infinite; }
+    section[d="4"] { animation: scroll-anim-4 10s linear infinite; }
+    @keyframes scroll-anim-1  { 0% { left: 0px; }  100% { left: -1400px; } }
+    @keyframes scroll-anim-2  { 0% { left: 0px; }  100% { left: -1800px; } }
+    @keyframes scroll-anim-3  { 0% { left: 0px; }  100% { left: -1200px; } } /* tweaked.. */
     @keyframes scroll-anim-4  { 0% { left: 0px; }  100% { left: -2000px; } }
 
-    /* turbulences animation */
+    /* paralax depth and lightning */
+    section[d="1"] { filter: saturate(40%);  }
+    section[d="2"] { filter: saturate(100%); }
+    section[d="3"] { filter: saturate(130%); }
+    section[d="4"] { filter: saturate(170%); }
 
-    [turbulences] {
-      animation: turbulences-anim 1s ease-in-out infinite;
+    /* scene specific tweaks */
+    section[d="3"] { filter: saturate(170%); top: 100px; font-size: 40px; background: none; }
+
+
+    [reflection] { animation: reflection-anim 2s ease-in-out infinite; }
+    @keyframes reflection-anim {
+        0% { filter: blur(4px); opacity: 0.4; transform: translate(0px, 40%) scale(1.0, -0.75) skew(-8deg, 0deg); }
+       50% { filter: blur(5px); opacity: 0.4; transform: translate(0px, 40%) scale(1.0, -0.60) skew( 0deg, 0deg); }
+      100% { filter: blur(4px); opacity: 0.4; transform: translate(0px, 40%) scale(1.0, -0.75) skew(-8deg, 0deg); }
     }
+
+    [turbulences] { animation: turbulences-anim 1s ease-in-out infinite; }
     @keyframes turbulences-anim {
-      0% {
-        margin-top: 0px;
-      }
-      50% {
-        margin-top: 10px;
-      }
-      100% {
-        margin-top: 0px;
-      }
+       0% { margin-top: 0px; }
+       50% { margin-top: 10px; }
+      100% {  margin-top: 0px; }
     }
 
-
-    /* shore animation */
-
-    [shore] {
-      filter: drop-shadow(0px 7px 5px rgba(255, 255, 255, 0.4));
-      animation: shore-anim 2s ease-in-out infinite;
-    }
-
+    [shore] { filter: drop-shadow(0px 7px 5px rgba(255, 255, 255, 0.4)); animation: shore-anim 2s ease-in-out infinite; }
     @keyframes shore-anim {
-      0% {
-        filter: drop-shadow(0px 6px 5px rgba(255, 255, 255, 0.4));
-      }
-      50% {
-        filter: drop-shadow(0px 6px 7px rgba(255, 255, 255, 0.15));
-      }
-      100% {
-        filter: drop-shadow(0px 6px 5px rgba(255, 255, 255, 0.4));
-      }
+        0% { filter: drop-shadow(0px 6px 5px rgba(255, 255, 255, 0.4)); }
+       50% { filter: drop-shadow(0px 6px 7px rgba(255, 255, 255, 0.15)); }
+      100% { filter: drop-shadow(0px 6px 5px rgba(255, 255, 255, 0.4)); }
     }
-
-
-    /* trail animation */
 
     [trail] {
       transform: translate(-30px, 36px) scale(5, 1) rotate(88deg);
@@ -433,73 +194,40 @@
       filter: saturate(12%);
     }
 
-    /* mirror transform */
-    [mirror] {
-      transform: scale(-1.0, 1.0);
-    }
+    [mirror] { transform: scale(-1.0, 1.0); }
 
-  </style>
+    </style>
+  </head>
   <body>
     <div class="root">
-      <div class="vignette zone left-plus-45">
-        <div class="hover"></div>
-        <div class="zone left-minus-45">
-          <div class="hover"></div>
-          <div class="zone right-plus-45">
-            <div class="hover"></div>
-            <div class="zone right-middle">
-              <div class="hover"></div>
-              <div class="zone right-minus-45">
-                <div class="hover"></div>
-
-                <main>
-                  <div class="ground"></div>
-                  <div class="sky"></div>
-                  <!--
-                  <div class="avatar"></div>
-                  <div class="asteroid-1">🌳</div>
-                  <div class="asteroid-2">🥔</div>
-                  <div class="explosion-1">🎇</div>
-                  <div class="explosion-2">🎆</div>
-    
-                  <div class="laserball"><figure n=1 a=🔮></figure></div>
-
-                  <div class="ufo">🛸</div>
-                  -->
-                  
-                  <div class="player"><div class="avatar" turbulences>🚀</div></div>
-                  
-                  <aside>
-
-                    <section d=1>
-                      <figure n=7 a=⛰ b=🏔 reflection></figure>
-                      <figure n=7 a=⛰ b=🏔 shore></figure>
-                    </section>
-                
-                    <section d=2>
-                      <figure n=5 a=⛰ reflection></figure>
-                      <figure n=5 a=⛰ shore></figure>
-                    </section>
-
-                    <section d=3>
-                        <figure n=1 a=⛵️ reflection mirror></figure>
-                        <figure n=1 a=⛵️ mirror></figure>
-                        <div trail><figure n=1 a=💧 ></figure></div>
-                      </section>
-               
-                    <section d=4>
-                      <figure n=5 a=⛰ b=🗻 reflection></figure>
-                      <figure n=5 a=⛰ b=🗻 shore></figure>
-                    </section>
-
-                  </aside>
-
-                </main><!-- background -->
-              </div><!-- right-minus-45 -->
-            </div><!-- right-middle -->
-          </div><!-- right-plus-45 -->
-        </div><!-- left-minus-45 -->
-      </div><!-- left-plus-45" -->
-    </div><!-- root -->
+      <div class="top">
+        <div class="middle">
+          <div class="bottom">
+            <main>
+              <div class="rocket"><figure n=1 a=🚀 turbulences></figure></div>
+              <aside>
+                <section d=1>
+                  <figure n=7 a=⛰ b=🏔 reflection></figure>
+                  <figure n=7 a=⛰ b=🏔 shore></figure>
+                </section>
+                <section d=2>
+                  <figure n=5 a=⛰ reflection></figure>
+                  <figure n=5 a=⛰ shore></figure>
+                </section>
+                <section d=3>
+                  <figure n=1 a=⛵️ reflection mirror></figure>
+                  <figure n=1 a=⛵️ mirror></figure>
+                  <figure n=1 a=💧 trail></figure>
+                </section>
+                <section d=4>
+                  <figure n=5 a=⛰ b=🗻 reflection></figure>
+                  <figure n=5 a=⛰ b=🗻 shore></figure>
+                </section>
+              </aside>
+            </main>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
